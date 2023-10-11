@@ -1,0 +1,10 @@
+{
+  "connection_name": "clickhouse_connect",
+  "path": "/airflow/raw_data",
+  "careerist": "https://careerist.ru/",
+  "getmatch": "https://getmatch.ru//vacancies/",
+  "zarplata": "https://hr.zarplata.ru/",
+  "csv_file_path": "./parsed_data/",
+  "psql_raw_path": "/docker-entrypoint-initdb.d/raw_data/",
+  "column_names": "open_val, close_val, high, low, value, volume, start_time, end_time, ticker, company"
+}

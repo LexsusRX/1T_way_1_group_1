@@ -1,0 +1,10 @@
+{
+  "clickhouse_connect": {
+    "conn_type": "localhost",
+    "host": "clickhouse",
+    "database": "parsedvacancy",
+    "user": "clickuser",
+    "password": "userpassword",
+    "port": 8123
+  }
+}
