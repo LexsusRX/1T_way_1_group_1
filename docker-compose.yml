@@ -22,7 +22,7 @@ x-airflow-common:
     - ./airflow/plugins:/opt/airflow/plugins
     - ./scripts_parsing:/opt/airflow/scripts_parsing
     - ./airflow/raw_data/:/opt/airflow/raw_data
-#    - ./requirements.txt:/requirements.txt
+    - ./requirements.txt:/requirements.txt
   user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
   depends_on:
     &airflow-common-depends-on
@@ -99,6 +99,7 @@ services:
   grafana:
     build:
        context: ./grafana
+    image: grafana/grafana-enterprise
     environment:
        GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: grafana-clickhouse-datasource
        GF_INSTALL_PLUGINS: grafana-clickhouse-datasource
