@@ -57,7 +57,7 @@ services:
       interval: 30s
       timeout: 20s
       retries: 3
-    container_name: clickhouse_server
+    container_name: clickhouse_server_1
     depends_on:
       - postgres
     env_file:
@@ -78,7 +78,7 @@ services:
     image: spoonest/clickhouse-tabix-web-client
 #    networks:
 #        - clickhouse
-    container_name: click_ui
+    container_name: click_ui_1
     depends_on:
       - clickhouse
     ports:
@@ -296,7 +296,7 @@ services:
   selenium-event-bus:
     image: selenium/event-bus:latest
 #    shm_size: 1gb
-    container_name: selenium-event-bus
+    container_name: selenium-event-bus_1
     ports:
       - "4442:4442"
       - "4443:4443"
@@ -305,7 +305,7 @@ services:
   selenium-sessions:
     image: selenium/sessions:latest
 #    shm_size: 1gb
-    container_name: selenium-sessions
+    container_name: selenium-sessions_1
     ports:
       - "5556:5556"
     depends_on:
@@ -317,14 +317,14 @@ services:
 
   selenium-session-queue:
     image: selenium/session-queue:latest
-    container_name: selenium-session-queue
+    container_name: selenium-session-queue_1
     ports:
       - "5559:5559"
 
   selenium-distributor:
     image: selenium/distributor:latest
 #    shm_size: 1gb
-    container_name: selenium-distributor
+    container_name: selenium-distributor_1
     ports:
       - "5553:5553"
     depends_on:
@@ -343,7 +343,7 @@ services:
   selenium-router:
     image: selenium/router:latest
 #    shm_size: 1gb
-    container_name: selenium-router
+    container_name: selenium-router_1
     ports:
       - "4444:4444"
     depends_on:
