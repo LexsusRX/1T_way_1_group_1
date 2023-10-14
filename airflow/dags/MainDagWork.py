@@ -51,10 +51,12 @@ url_getmatch = dag_resources.get('getmatch')
 #TODO доработать фрэйм под унифицированные колонки или под каждый парсинг индивидуально
 df = pd.DataFrame(columns=['name_vacancy', 'organization', 'url', 'skils', 'city', 'min_price', 'max_price', 'current', 'vac', 'busyness', 'data'])
 
-def create_table_zarplata():
+def create_table_zarplata(**context):
     """
     Создание таблицы для ресурса зарплата.ру
     """
+    log = context['create_table_zarplata'].log
+    
     table_name = 'zarplata_table'
     drop_table_query = f"DROP TABLE IF EXISTS {config['database']}.{table_name};"
     client.execute(drop_table_query)
@@ -75,8 +77,10 @@ def create_table_zarplata():
     """
     
     #Семейство MergeTree Наиболее универсальные и функциональные движки таблиц для задач с высокой загрузкой. Общим свойством этих движков является быстрая вставка данных с последующей фоновой обработкой данных. Движки *MergeTree поддерживают репликацию данных (в Replicated* версиях движков), партиционирование, и другие возможности не поддержанные для других движков.
+    try:
+        client.execute(create_table_query)
+    except Exception as err: log.info('create table falled: ' + {err})
     
-    client.execute(create_table_query)
     
 def create_table_careerist():
     """

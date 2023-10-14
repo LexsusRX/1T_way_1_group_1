@@ -12,8 +12,8 @@ x-airflow-common:
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'   #запретить подгружать примеры DAG-ов
     AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth'
-#    _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-clickhouse-driver pandas selenium dateparser}
-    _PIP_ADDITIONAL_REQUIREMENTS: 'clickhouse-driver==0.2.6 pandas selenium dateparser'
+    _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-clickhouse-driver pandas selenium dateparser airflow-clickhouse-plugin}
+#    _PIP_ADDITIONAL_REQUIREMENTS: 'clickhouse-driver==0.2.6 pandas selenium dateparser'
     AIRFLOW__CLICKHOUSE__SQL_ALCHEMY_CONN: clickhouse+native://admin:password@clickhouse/parsedvacancy
 
   volumes:
@@ -22,7 +22,7 @@ x-airflow-common:
     - ./airflow/plugins:/opt/airflow/plugins
     - ./scripts_parsing:/opt/airflow/scripts_parsing
     - ./airflow/raw_data/:/opt/airflow/raw_data
-    - ./requirements.txt:/requirements.txt
+#    - ./requirements.txt:/requirements.txt
   user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
   depends_on:
     &airflow-common-depends-on
@@ -67,11 +67,11 @@ services:
         soft: 262144
         hard: 262144
     ports:
-      - "8123:8123"
+      - "10193:8123"
 #      - "9000:9000"
     volumes:
       - ./clickhouse_scripts/:/docker-entrypoint-initdb.d/
-      - "clickhouse-data:/var/lib/clickhouse"
+      - ./clickhouse-data:/var/lib/clickhouse
       - ./airflow/raw_data/:/docker-entrypoint-initdb.d/raw_data/
 
   click-ui:
@@ -96,11 +96,30 @@ services:
       retries: 50
     restart: always
   
+  grafana:
+    build:
+       context: ./grafana
+    environment:
+       GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: grafana-clickhouse-datasource
+       GF_INSTALL_PLUGINS: grafana-clickhouse-datasource
+       GF_PATHS_PROVISIONING: "/etc/grafana/provisioning"
+       GF_SECURITY_ADMIN_USER: admin
+       GF_SECURITY_ADMIN_PASSWORD: password
+    volumes:
+     - ./grafana_data:/var/lib/grafana
+     - ./grafana/datasources/:/etc/grafana/provisioning/datasources
+     - ./grafana/dshboards/:/etc/grafana/provisioning/dshboards
+    depends_on:
+     - clickhouse
+    ports:
+     - 10192:3000
+    restart: always
+
   airflow-webserver:
     <<: *airflow-common
     command: webserver
     ports:
-      - 8080:8080
+      - 10191:8080
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
       interval: 10s
@@ -353,5 +372,6 @@ services:
 volumes:
   postgres-db-volume:
   clickhouse-data:
+  grafana_data:
 # networks:
 #  clickhouse:
