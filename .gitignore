@@ -3,3 +3,4 @@
 /airflow/logs/
 /Trash/
 /clickhouse-data/
+/grafana_data/alerting

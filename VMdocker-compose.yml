@@ -77,7 +77,7 @@ services:
         soft: 262144
         hard: 262144
     ports:
-      - "8123:8123"
+      - "10193:8123"
 #      - "9000:9000"
     volumes:
       - ./clickhouse_scripts/:/docker-entrypoint-initdb.d/
@@ -125,14 +125,14 @@ services:
     depends_on:
      - clickhouse
     ports:
-     - 3000:3000 
+     - 10195:3000 
     restart: unless-stopped #always
 
   airflow-webserver:
     <<: *airflow-common
     command: webserver
     ports:
-      - 8080:8080
+      - 10191:8080
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
       interval: 10s
@@ -357,7 +357,7 @@ services:
 #    shm_size: 1gb
     container_name: way_1_group_1_selenium-router
     ports:
-      - "4444:4444"
+      - "4114:4114" #4444:4444
     depends_on:
       - selenium-distributor
       - selenium-sessions

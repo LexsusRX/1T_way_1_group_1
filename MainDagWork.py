@@ -179,10 +179,10 @@ def parse_careerist():
 
     # обходит капчу и берет самый первый адрес странницы с поиском
     def bypass_captcha(url, keyword):
-        with webdriver.Chrome(service=ChromeService(ChromeDriverManager().install())) as browser:
-#        with webdriver.Remote(command_executor='http://selenium-router:4444/wd/hub', options=options) as browser
+#        with webdriver.Chrome(service=ChromeService(ChromeDriverManager().install())) as browser:
+#        with webdriver.Remote(command_executor='http://selenium-router:4114/wd/hub', options=options) as browser
 #        with webdriver.Chrome(command_executor='http://selenium-router:4114/wd/hub', options=options) as browser
-#        with webdriver.Chrome(service=ChromiumService(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())) as browser
+        with webdriver.Chrome(service=ChromiumService(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())) as browser
             browser.get(url)
             time.sleep(2)
 

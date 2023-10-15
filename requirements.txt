@@ -1,2 +1,5 @@
 clickhouse-driver
 -U airflow-clickhouse-plugin
+selenium==4.7.0
+webdriver_manager==3.8.5
+chromedriver-autoinstaller==0.4.0
